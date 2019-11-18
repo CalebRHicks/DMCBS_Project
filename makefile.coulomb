@@ -1,0 +1,11 @@
+OBJPOT=\
+   coulomb.o\
+   kshell.o\
+   $(MPIFILE).o\
+   $(MATRIX).o\
+   betafun.o
+
+coulomb: $(OBJPOT)
+	$(FC) $(FFLAGS) -c coulomb.f90 $(OBJPOT) $(LIBS)
+
+coulomb.o: kshell.o $(MPIFILE).o $(MATRIX).o betafun.o coulomb.f90

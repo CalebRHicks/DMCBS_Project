@@ -1,0 +1,12 @@
+OBJPOT=\
+   toypot.o\
+   rungekutta.o\
+   $(MPIFILE).o\
+   $(MATRIX).o
+
+toypot: $(OBJPOT)
+	$(FC) $(FFLAGS) -c toypot.f90 $(OBJPOT) $(LIBS)
+
+toypot.o: $(MPIFILE).o $(MATRIX).o rungekutta.o toypot.f90
+
+rungekutta.o: rungekutta.f90

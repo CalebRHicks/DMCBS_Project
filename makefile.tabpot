@@ -1,0 +1,8 @@
+OBJPOT=\
+   tabpot.o\
+   $(MPIFILE).o
+
+tabpot: $(OBJPOT)
+	$(FC) $(FFLAGS) -c tabpot.f90 $(OBJPOT) $(LIBS)
+
+tabpot.o: $(MPIFILE).o tabpot.f90

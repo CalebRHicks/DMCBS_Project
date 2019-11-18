@@ -1,0 +1,11 @@
+OBJPOT=\
+   doublegauss.o\
+   rungekutta.o
+
+doublegauss: $(OBJPOT)
+	$(FC) $(FFLAGS) -c doublegauss.f90 $(OBJPOT) $(LIBS)
+
+doublegauss.o: $(MPIFILE).o rungekutta.o doublegauss.f90
+
+rungekutta.o: rungekutta.f90
+	$(FC) $(FFLAGS) -c rungekutta.f90

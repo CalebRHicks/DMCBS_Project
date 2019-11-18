@@ -1,0 +1,64 @@
+17             # random number seed for lattice site walkers
+1              # type of run -1=opt, 0=vmc,1=dmc local w
+.true.         # use lattice sites if true
+1000           # number of walkers
+0              # equilibration blocks
+10             # averaging blocks
+200            # steps/block
+0.00005        # time step
+0.40           # etrial
+.true.         # use some unit for energy (definition in the program)
+-1.0           # drift cut off
+.true.         # fixed-node
+1.1            # drastically reduce walkers if more than this factor
+0.9            # drastically increase walkers if less than this factor
+0.5            # rebalance % limit (increase for no balancing)
+10.0           # weight cut off
+10000          # number of table points for jastrow and potential
+0.5            # hbar^2/2 without mass
+3              # number of dimensions
+66             # number of particles
+33    1.0      # number and mass of up atoms
+33    1.0      # number and mass of down atoms
+bcs            # wavefunction (additional input required depending on the choice)
+0.0            # a constant in importance function
+0.0337737278   # density = kF=1.0
+0              # number of up states
+0              # number of down states
+10             # number of pairing functions for s-wave
+0.00197519728006648144
+0.00249764752028349595
+0.00194383232328550247
+0.00081339556934447224
+0.00033078733782252270
+0.00019008071412562492
+0.00019983385861822818
+0.00016699298789053479
+0.00016360289711864207
+0.00012098992317746450
+0 0 0          # q external potential
+0.0            # v0ex
+0.0            # multiply v0ex by this in the wavefunction
+0              # number of q vectors in long range Jastrow
+0.0            # beta parameter in long range Jastrow
+0.0            # gamma parameter in long range Jastrow
+0.5            # b parameter of up-down beta-function
+5.0            # d parameter of up-down beta-function
+1.0            # up-down beta strength
+1.0            # V0 of coshpot
+24.0           # amu of coshpot
+1.0            # opposite spin jastrow strength
+0.0            # equal spin jastrow strength
+1.15           # jastrow healing distance
+0.0            # opposite spin jastrow interaction strenght (if 0 use v0)
+-10.0          # equal spin jastrow interaction strenght (if 0 use v0)
+0              # compute g(r)
+0              # compute s(q)
+0              # compute n(k)
+0              # compute density response in euclidean time
+100            # number of iterations for optimization
+.false.        # optimize Jastrow
+.true.         # optimize s-wave
+0.7            # delta step in the optimization
+0.0001         # epsilon parameter to regularize the optimization
+

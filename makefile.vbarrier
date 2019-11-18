@@ -1,0 +1,7 @@
+OBJPOT=\
+   vbarrier.o
+
+vbarrier: $(OBJPOT)
+	$(FC) $(FFLAGS) -c vbarrier.f90 $(OBJPOT) $(LIBS)
+
+vbarrier.o: $(MPIFILE).o vbarrier.f90

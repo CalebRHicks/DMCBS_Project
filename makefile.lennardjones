@@ -1,0 +1,8 @@
+OBJPOT=\
+   lennardjones.o\
+   $(MPIFILE).o
+
+lennardjones: $(OBJPOT)
+	$(FC) $(FFLAGS) -c lennardjones.f90 $(OBJPOT) $(LIBS)
+
+lennardjones.o: $(MPIFILE).o lennardjones.f90

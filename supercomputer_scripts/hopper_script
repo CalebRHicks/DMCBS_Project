@@ -1,0 +1,14 @@
+#PBS -q debug
+#PBS -l mppwidth=72
+#PBS -l walltime=00:30:00
+#PBS -j oe
+#PBS -N 2da
+#PBS -A m1034
+#PBS -V
+#PBS -S /bin/bash
+
+cd $PBS_O_WORKDIR
+
+date
+aprun -n 72 ./dmcbcsmpi < dmcbcs.dat > out.test
+date

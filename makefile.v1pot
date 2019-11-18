@@ -1,0 +1,8 @@
+OBJPOT=\
+   v1pot.o\
+   $(MPIFILE).o
+
+v1pot: $(OBJPOT)
+	$(FC) $(FFLAGS) -c v1pot.f90 $(OBJPOT) $(LIBS)
+
+v1pot.o: $(MPIFILE).o v1pot.f90

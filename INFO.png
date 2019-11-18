@@ -1,0 +1,10 @@
+-changes made to dmcbcs.f90 (search "Galea"):
+added option to start from random configurations as opposed to lattice sites
+changed orbital call in coshpot.f90
+added option for 2d units E_FG=E_F/2
+updated rungekutta.f90 (marked changes with !2d)
+
+-Makefile is set up for sharcnet
+
+-note: to run proper 2D simulations we have found the Jastrow table size to be important (see file "coshpot2d.f90")
+

@@ -1,0 +1,11 @@
+OBJPOT=\
+   coshpotbox.o\
+   rungekutta.o\
+   $(MPIFILE).o
+
+coshpotbox: $(OBJPOT)
+	$(FC) $(FFLAGS) -c coshpotbox.f90 $(OBJPOT) $(LIBS)
+
+coshpotbox.o: $(MPIFILE).o rungekutta.o coshpotbox.f90
+
+rungekutta.o: rungekutta.f90

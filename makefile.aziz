@@ -1,0 +1,7 @@
+OBJPOT=\
+   aziz.o
+
+aziz: $(OBJPOT)
+	$(FC) $(FFLAGS) -c aziz.f90 $(OBJPOT) $(LIBS)
+
+aziz.o: $(MPIFILE).o aziz.f90

@@ -92,7 +92,7 @@ contains
          stop
       endif
       v0=v0op
-      call orbital(f,df,d2f,hbar,ntab0,dr,vpot,0)
+      call orbital(f,df,d2f,hbar,ntab0,dr,vpot,0,ndim)
       utab(1,0:ntab0)=f(0:ntab0)/f(ntab0)
       dutab(1,0:ntab0)=df(0:ntab0)/f(ntab0)
       d2utab(1,0:ntab0)=d2f(0:ntab0)/f(ntab0)
@@ -103,7 +103,7 @@ contains
          stop
       endif
       v0=v0eq
-      call orbital(f,df,d2f,hbar,ntab0,dr,vpot,0)
+      call orbital(f,df,d2f,hbar,ntab0,dr,vpot,0,ndim)
       utab(2,0:ntab0)=f(0:ntab0)/f(ntab0)
       dutab(2,0:ntab0)=df(0:ntab0)/f(ntab0)
       d2utab(2,0:ntab0)=d2f(0:ntab0)/f(ntab0)
@@ -137,7 +137,8 @@ contains
 
    function vpot(r)
    real(kind=r8) :: vpot,r
-   vpot=-2.0_r8*v0*amu**2*hbar/cosh(amu*r)**2
+   !vpot=-2.0_r8*v0*amu**2*hbar/cosh(amu*r)**2
+   vpot=2.0_r8*v0*amu**2*hbar*exp(-0.5*r**2/amu**2)-2.0_r8*v0*amu**2*hbar*exp(-0.5*(r-3*amu)**2/amu**2)
    return
    end function vpot
 
@@ -193,4 +194,66 @@ contains
    is=1
    d2u=d2u+sum(du*du)
    end subroutine getphi
+
+
+
+   subroutine getphione(x,drr,i,phiratio)
+   real(kind=r8) :: x(:,:),drr(:),phiratio
+   real(kind=r8) :: u,uj
+   integer(kind=i4) :: i,j,index,itab
+   real(kind=r8), dimension(ndim) :: dx
+   real(kind=r8) :: r,c1,c2,c3,c4,dr
+   real(kind=r8), parameter :: tiny=1.0e-14_r8
+   u=0.0_r8
+   ieq=.true.
+   do j=1,npart
+      if (j.ne.i) then
+         if (ieq.and.spin(i).eq.spin(j).or.iop.and.spin(i).ne.spin(j)) then
+            dx(:)=x(:,i)-x(:,j)
+            dx=dx-el*nint(dx*eli)
+            r=max(tiny,sqrt(sum(dx**2)))
+            if (r.lt.range) then
+               dr=scale*r
+               index=dr
+               index=max(1,min(index,ntab-2))
+               dr=dr-index
+               c1=-dr*(dr-1.0_r8)*(dr-2.0_r8)/6.0_r8
+               c2=(dr+1.0_r8)*(dr-1.0_r8)*(dr-2.0_r8)/2.0_r8
+               c3=-(dr+1.0_r8)*dr*(dr-2.0_r8)/2.0_r8
+               c4=(dr+1.0_r8)*dr*(dr-1.0_r8)/6.0_r8
+               if (spin(i).ne.spin(j)) then
+                  itab=1
+               else
+                  itab=2
+               endif
+               uj=c1*utab(itab,index-1)+c2*utab(itab,index) &
+                 +c3*utab(itab,index+1)+c4*utab(itab,index+2)
+               u=u-uj
+            endif
+            dx(:)=x(:,i)-x(:,j)-drr(:)
+            dx=dx-el*nint(dx*eli)
+            r=max(tiny,sqrt(sum(dx**2)))
+            if (r.lt.range) then
+               dr=scale*r
+               index=dr
+               index=max(1,min(index,ntab-2))
+               dr=dr-index
+               c1=-dr*(dr-1.0_r8)*(dr-2.0_r8)/6.0_r8
+               c2=(dr+1.0_r8)*(dr-1.0_r8)*(dr-2.0_r8)/2.0_r8
+               c3=-(dr+1.0_r8)*dr*(dr-2.0_r8)/2.0_r8
+               c4=(dr+1.0_r8)*dr*(dr-1.0_r8)/6.0_r8
+               if (spin(i).ne.spin(j)) then
+                  itab=1
+               else
+                  itab=2
+               endif
+               uj=c1*utab(itab,index-1)+c2*utab(itab,index) &
+                 +c3*utab(itab,index+1)+c4*utab(itab,index+2)
+               u=u+uj
+            endif
+         endif
+      endif
+   enddo
+   phiratio=exp(u)
+   end subroutine getphione
 end module potential

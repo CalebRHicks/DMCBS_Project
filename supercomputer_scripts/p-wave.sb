@@ -1,0 +1,44 @@
+#!/bin/bash
+
+
+#SBATCH --time=0-03:59:00
+#SBATCH --mem=40G
+#SBATCH --nodes=1
+#SBATCH --ntasks=28
+#SBATCH --cpus-per-task=1
+#SBATCH --exclusive
+#SBATCH --tasks-per-node=28
+
+cd ${SLURM_SUBMIT_DIR}
+mom=('0 0 0' '0 0 1' '0 1 0' '1 0 0' '-1 0 0' '0 -1 0' '0 0 -1' '1 1 0' '1 -1 0' '-1 1 0' '-1 -1 0' '1 0 1' '1 0 -1' '-1 0 1' '-1 0 -1' '0 1 1')
+for unpaired in {1..16}
+do
+
+num=$unpaired
+pairs=0
+nup=$num
+sed -i "s/.*number of particles.*/$num\t# number of particles/" input.dat
+sed -i "s/.*number and mass of up atoms.*/$nup\t1.0\t# number and mass of up atoms/" input.dat
+sed -i "s/.*number and mass of down atoms.*/0\t1.0\t# number and mass of down atoms/" input.dat
+
+sed -i "s/.*number of up states.*/$unpaired\t# number of up states/" input.dat
+
+sed -i "/unpaired momentum/d" input.dat
+for i in $(eval echo "{0..$(( unpaired - 1 ))}")
+do
+sed -i "/number of up states/a${mom[i]}\t # unpaired momentum" input.dat
+done
+
+
+sed -i "s/.*use lattice sites if true.*/.true.\t# use lattice sites if true/" input.dat
+sed -i "s/.*type of run.*/0\t# type of run -1=opt, 0=vmc, 1=dmc, local w/" input.dat
+mpirun -n 28 ./penmp < input.dat > /dev/null
+sed -i "s/.*type of run.*/1\t# type of run -1=opt, 0=vmc, 1=dmc, local w/" input.dat
+sed -i "s/.*use lattice sites if true.*/.false.\t# use lattice sites if true/" input.dat
+mpirun -n 28 ./penmp < input.dat > ./outputDoubleGauss/'outN'$num.out
+
+done
+
+
+
+

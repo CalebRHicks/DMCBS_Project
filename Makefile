@@ -11,7 +11,7 @@ else
 endif
 
 LDFLAGS   = -L$(MKLROOT)/lib/intel64 -I$(MKLROOT)/include
-LIBS=-lmkl_intel_lp64 -lmkl_core -lmkl_intel_thread -openmp -check all -warn all
+LIBS=-lmkl_intel_lp64 -lmkl_core -lmkl_intel_thread -openmp -lpthread -liomp5
 
 FFLAGS=-O3 #-pg #-prof-use
 #FFLAGS=-check all -O0 -warn all
@@ -19,7 +19,8 @@ FFLAGS=-O3 #-pg #-prof-use
 #LDFLAGS=-L$(HOME)/home/lib
 #LIBS=-llapackmin -lblasmin -check all -warn all #-pg #-prof-use
 
-POTEN=coshpot
+#POTEN=coshpot
+POTEN=coshpotpwave
 #POTEN=doublegauss
 #POTEN=coshpotbox
 #POTEN=aziz

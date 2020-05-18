@@ -1,0 +1,36 @@
+#!/bin/bash
+
+
+#SBATCH --time=0-03:59:00
+#SBATCH --mem=40G
+#SBATCH --nodes=1
+#SBATCH --ntasks=28
+#SBATCH --cpus-per-task=1
+#SBATCH --exclusive
+#SBATCH --tasks-per-node=28
+
+cd ${SLURM_SUBMIT_DIR}
+
+for pairs in 1 2
+do
+for unpaired in 0 1
+do
+num=$((2*$pairs+$unpaired))
+sed -i "s/.*type of run.*/1\t# type of run -1=opt, 0=vmc, 1=dmc, local w/" input.dat
+
+sed -i "s/.*number of particles.*/$num\t# number of particles/" input.dat
+sed -i "s/.*number and mass of up atoms.*/$pairs\t1.0\t# number and mass of up atoms/" input.dat
+sed -i "s/.*number and mass of down atoms.*/$pairs\t1.0\t# number and mass of down atoms/" input.dat
+
+sed -i "s/.*number of up states.*/$unpaired\t# number of up states/" input.dat
+
+cp fort.9.bak fort.9
+
+srun -n 28 ./penmp < input.dat > ./output/'outP'$pairs'U'$unpaired.out
+
+done
+done
+
+
+
+
